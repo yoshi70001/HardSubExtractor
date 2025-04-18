@@ -11,7 +11,7 @@ def process_video(path):
     batchPositions = []
     # ocrModel = loadModel()
     try:
-        video = cv2.VideoCapture(path, cv2.CAP_FFMPEG)
+        video = cv2.VideoCapture(path)
         if not video.isOpened():
             raise ValueError(f"No se pudo abrir el video: {path}")
         

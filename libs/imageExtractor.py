@@ -106,18 +106,18 @@ def proccessFrames(frames,batch_size,counters,fps):
         output_mask = postprocess_output(output[i])
         inferedFrameEroded = cv2.erode(output_mask,np.ones((3,6)),iterations=2)
         inferedFrameEroded= np.uint8(inferedFrameEroded)
-        inferedFrameEroded = cv2.bitwise_not(inferedFrameEroded)
+        inferedFrameEroded = cv2.bitwise_not(inferedFrameEroded) # type: ignore
         contours, hierarchy=cv2.findContours(inferedFrameEroded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         containText = False
         cv2.imshow('original',frames[i])
         cv2.imshow('mascara',inferedFrameEroded)
         for contour in contours:
-            x,y,w,h = cv2.boundingRect(contour)
-            if h>7 and y >150:
-                area = cv2.contourArea(contour)
-                if 240< area<112*224:
-                    containText = True
-                    break
+            # x,y,w,h = cv2.boundingRect(contour)
+            # if h>7 and y >150:
+            area = cv2.contourArea(contour)
+            if 240< area<112*224:
+                containText = True
+                break
         if containText :
             # framePositions.append({'counter':counters[i],"frame":frames[i],"fps":fps,"time":format_timedelta(timedelta(seconds=(counters[i]/fps)))})
             cv2.imwrite(f'frames/{format_timedelta(timedelta(seconds=(counters[i]/fps)))}.jpeg',frames[i])
